@@ -34,16 +34,21 @@
             <th>ĐỘ SÂU (KM)</th>
             <th>THỜI GIAN</th>
             <th>SÓNG THẦN</th>
-            <th></th>
           </tr>
         </thead>
+        <template #action="props">
+            <Button
+                :text="`Col 1: ${props.cellData}`"
+                @click="rowClick(props.rowData)"
+            >Xem</Button>
+        </template>
       </DataTable>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch } from 'vue'
 import DataTable from 'datatables.net-vue3'
 import DataTablesCore from 'datatables.net'
 DataTable.use(DataTablesCore)
@@ -55,7 +60,6 @@ const emit = defineEmits(['select-quake'])
 
 const dtRef = ref(null)
 const searchValue = ref('')
-const sectionRef = ref(null)
 watch(searchValue, val => {
   dtRef.value?.dt?.search(val).draw()
 })
@@ -96,15 +100,8 @@ const columns = [
   },
   {
     data: null,
-    orderable: false,
-    render: () =>
-      `<button class="dt-view-btn font-mono text-[11px] px-3 py-1 rounded border border-line text-inkdim whitespace-nowrap flex items-center gap-1.5">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-          <circle cx="12" cy="12" r="3"/>
-        </svg>
-        Xem
-      </button>`,
+    render: '#action',
+    title: 'Action'
   },
 ]
 
@@ -134,33 +131,9 @@ const dtOptions = {
     paginate: { previous: '‹', next: '›' },
   },
 }
-
-let clickHandler = null
-
-onMounted(() => {
-  nextTick(() => {
-    clickHandler = e => {
-      const dt = dtRef.value?.dt
-      if (!dt) return
-
-      const btn = e.target.closest('.dt-view-btn')
-      const row = e.target.closest('tr')
-      if (!row) return
-
-      if (btn || row) {
-        const data = dt.row(row).data()
-        if (data?.original) emit('select-quake', data.original)
-      }
-    }
-
-    sectionRef.value?.addEventListener('click', clickHandler)
-  })
-})
-
-onUnmounted(() => {
-  sectionRef.value?.removeEventListener('click', clickHandler)
-})
-
+function rowClick(rowData) {
+  if (rowData?.original) emit('select-quake', rowData.original)
+}
 </script>
 
 <style>

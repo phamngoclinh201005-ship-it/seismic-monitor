@@ -46,6 +46,7 @@ onUnmounted(() => {
   <template v-else>
     <DashboardSection
       :quakes="quakes"
+
       @select-quake="handleSelectQuake"
       @change-range="handleRangeChange"
     />
@@ -59,5 +60,6 @@ onUnmounted(() => {
       :quakes="quakes"
       @select-quake="handleSelectQuake"
     />
+
   </template>
 </template>
