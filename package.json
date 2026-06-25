@@ -21,7 +21,8 @@
     "leaflet": "^1.9.4",
     "pinia": "^3.0.4",
     "vue": "^3.5.38",
-    "vue-router": "^5.1.0"
+    "vue-router": "^5.1.0",
+    "vue3-easy-data-table": "^1.5.47"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",

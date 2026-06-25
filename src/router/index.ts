@@ -1,7 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import HomeView from '@/views/HomeView.vue'
+import QuakeDetailView from '@/views/QuakeDetailView.vue'
+
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: HomeView,
+    },
+    {
+      path: '/quake/:id',
+      name: 'quake-detail',
+      component: QuakeDetailView,
+    },
   ],
 })
 

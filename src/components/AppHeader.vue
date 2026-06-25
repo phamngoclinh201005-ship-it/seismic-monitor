@@ -15,9 +15,8 @@
             </div>
 
             <nav class="hidden md:flex items-center gap-1 font-mono text-xs">
-                <a v-for="item in navItems" :key="item.id" :href="`#${item.id}`" 
-                :class="[
-                    'nav-pill px-3 py-1.5 rounded-lg border transition-all',
+                <a v-for="item in navItems" :key="item.id" @click.prevent="goTo(item.id)" :class="[
+                    'nav-pill px-3 py-1.5 rounded-lg border transition-all cursor-pointer',
                     activeSection === item.id
                         ? 'border-amber/40 bg-amber/10 text-amber'
                         : 'border-transparent text-inkdim hover:text-ink'
@@ -33,6 +32,10 @@
     </header>
 </template>
 <script setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
 defineProps({
     activeSection: {
         type: String,
@@ -46,4 +49,11 @@ const navItems = [
     { id: 'map', label: 'Bản đồ' },
     { id: 'detail', label: 'Chi tiết' },
 ]
+
+const goTo = async (id) => {
+    await router.push({ path: '/' })
+    setTimeout(() => {
+        document.querySelector(`#${id}`)?.scrollIntoView({ behavior: 'smooth' })
+    }, 400)
+}
 </script>
